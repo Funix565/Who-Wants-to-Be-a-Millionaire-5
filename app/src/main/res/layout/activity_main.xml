@@ -9,6 +9,14 @@
     android:background="#CBC3E3"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/logoIV"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:src="@drawable/millionlogo"
+        android:contentDescription="game Logo"
+        android:scaleType="fitEnd"/>
+
     <!--    TODO-->
     <!--    Перенести дизайн до стилів
     Перенести константи у xml-->
@@ -16,7 +24,7 @@
     Чи є тут шари? Я хочу на фоні коло, а у колі кнопки-->
     <Button
         android:id="@+id/start_game"
-        android:layout_width="170dp"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:text="Почати гру"
         android:textColor="#FFC300"
@@ -24,7 +32,7 @@
 
     <Button
         android:id="@+id/game_settings"
-        android:layout_width="170dp"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:text="Налаштування"
         android:textColor="#FFC300"
