@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#CBC3E3">
+
+    <TextView
+        android:id="@+id/price_sum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Приз: 1 000 000$"
+        android:textSize="25sp"
+        android:shadowColor="#000000"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="0.5"
+        android:textColor="#FFC300"
+        />
+
+    <TextView
+        android:id="@+id/question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="15dp"
+        android:background="#9F2B68"
+        android:padding="10dp"
+        android:textAlignment="center"
+        android:text="Велике довге запитання з фоном та варіантами, які дають заробити гроші. Багато грошей?"
+        android:textColor="#ffffff" />
+
+    <Button
+        android:id="@+id/answer_a"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/question"
+        android:layout_alignStart="@id/question"
+        android:text="A: Long Text 1 Left"
+        android:textSize="10sp"
+        android:textAlignment="textStart"/>
+
+    <Button
+        android:id="@+id/answer_b"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/question"
+        android:layout_alignEnd="@id/question"
+        android:text="B: Text 2 Left"
+        android:textSize="10sp"
+        android:textAlignment="textStart"/>
+
+    <Button
+        android:id="@+id/answer_c"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/answer_a"
+        android:layout_alignStart="@id/question"
+        android:text="C: Text 3 Right"
+        android:textSize="10sp"
+        android:textAlignment="textStart"/>
+
+    <Button
+        android:id="@+id/answer_d"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/answer_b"
+        android:layout_alignEnd="@id/question"
+        android:text="D: Long Text 4 Right"
+        android:textSize="10sp"
+        android:textAlignment="textStart"/>
+
+    <Button
+        android:id="@+id/take_money"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp"
+        android:backgroundTint="#FFC300"
+        android:text="Забрати гроші"
+        android:textColor="#000000"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/fif_fif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/question"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="#FFC300"
+        android:textColor="#000000"
+        android:text="50/50"/>
+
+</RelativeLayout>
