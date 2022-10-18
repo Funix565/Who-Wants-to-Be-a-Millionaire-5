@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun onGameSettingsPressed() {
         // TODO: Go to settings
+        // TODO: Pay attention to selected item in Spinner
+        moveTaskToBack(false)
     }
-
-
 }

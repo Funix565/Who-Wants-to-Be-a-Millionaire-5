@@ -5,11 +5,18 @@
     android:layout_height="match_parent"
     android:background="#CBC3E3">
 
+    <Spinner
+        android:id="@+id/numq_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+
     <CheckBox
         android:id="@+id/checkbox50"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_below="@id/numq_spinner"
+        android:layout_centerHorizontal="true"
         android:text="Ввімкнути підказку 50/50"
         android:textSize="20sp"/>
 
