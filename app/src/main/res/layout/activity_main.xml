@@ -10,7 +10,7 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:id="@+id/logoIV"
+        android:id="@+id/logo_iv"
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:src="@drawable/millionlogo"
@@ -20,10 +20,10 @@
     <!--    TODO-->
     <!--    Перенести дизайн до стилів
     Перенести константи у xml-->
-    <!--    Прибрати капс тексту
+    <!--
     Чи є тут шари? Я хочу на фоні коло, а у колі кнопки-->
     <Button
-        android:id="@+id/start_game"
+        android:id="@+id/start_game_button"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:text="Почати гру"
@@ -31,7 +31,7 @@
         android:backgroundTint="#9F2B68" />
 
     <Button
-        android:id="@+id/game_settings"
+        android:id="@+id/game_settings_button"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:text="Налаштування"
