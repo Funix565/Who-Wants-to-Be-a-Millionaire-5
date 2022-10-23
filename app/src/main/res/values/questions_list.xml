@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="question_1">
+        "Що допомагає дорослій черепасі захищатися від своїх ворогів?"
+    </string>
+    <string name="answer_1">
+        "Панцир"
+    </string>
+    <string name="option_a_1">
+        "Шкаралупа"
+    </string>
+    <string name="option_b_1">
+        "Броня"
+    </string>
+    <string name="option_c_1">
+        "Дах"
+    </string>
+
+    <string name="question_2">
+        "Хто проживав за адресою: Лондон, Бейкер стріт 221-б?"
+    </string>
+    <string name="answer_2">
+        "Шерлок Холмс"
+    </string>
+    <string name="option_a_2">
+        "Еркюль Пуаро"
+    </string>
+    <string name="option_b_2">
+        "Полковник Ісаєв"
+    </string>
+    <string name="option_c_2">
+        "Комісар Мегре"
+    </string>
+
+    <string name="question_3">
+        "Якими словами закінчується афоризм Хемінгуея «Щастя – це міцне здоров’я і ..»?"
+    </string>
+    <string name="answer_3">
+        "Слабка пам’ять"
+    </string>
+    <string name="option_a_3">
+        "Хороші друзі"
+    </string>
+    <string name="option_b_3">
+        "Великі гроші"
+    </string>
+    <string name="option_c_3">
+        "Сильна воля"
+    </string>
+
+    <string name="question_4">
+        "Ложечка з якого сплаву розплавиться під час помішування нею гарячого чаю?"
+    </string>
+    <string name="answer_4">
+        "Сплав Вуда"
+    </string>
+    <string name="option_a_4">
+        "Олов’яниста бронза"
+    </string>
+    <string name="option_b_4">
+        "Інвар"
+    </string>
+    <string name="option_c_4">
+        "Алюмель"
+    </string>
+
+    <string name="question_5">
+        "Як інакше називається алігаторова груша?"
+    </string>
+    <string name="answer_5">
+        "Авокадо"
+    </string>
+    <string name="option_a_5">
+        "Папайя"
+    </string>
+    <string name="option_b_5">
+        "Касава"
+    </string>
+    <string name="option_c_5">
+        "Маракуйя"
+    </string>
+
+</resources>
