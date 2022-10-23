@@ -2,7 +2,6 @@ package lab1.progmob.whowantstobeamillionaire
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import lab1.progmob.whowantstobeamillionaire.databinding.ActivityMainBinding
 import lab1.progmob.whowantstobeamillionaire.model.Settings

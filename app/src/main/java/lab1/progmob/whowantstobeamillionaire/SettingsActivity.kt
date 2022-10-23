@@ -26,7 +26,7 @@ class SettingsActivity : BaseActivity() {
         // 1. Get saved settings from state when we rotate screen
         // or
         // 2. Get settings from caller activity intent
-        settings = savedInstanceState?.getParcelable<Settings>(KEY_SETTINGS) ?:
+        settings = savedInstanceState?.getParcelable(KEY_SETTINGS) ?:
                     intent.getParcelableExtra(EXTRA_SETTINGS) ?:
                     throw IllegalArgumentException("You need to specify EXTRA_SETTINGS argument to launch this activity")
 

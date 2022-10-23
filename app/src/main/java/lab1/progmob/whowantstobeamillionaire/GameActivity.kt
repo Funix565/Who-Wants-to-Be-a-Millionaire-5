@@ -155,13 +155,14 @@ class GameActivity : BaseActivity() {
             winsum += incrementor
             incrementor += step
 
-            binding.priceSumTv.text = "Приз: $winsum\$"
+            binding.prizeSumTv.text = getString(R.string.prize, winsum)
 
+            // TODO: Maybe disable button because I can click several times and increase prize
             // A little delay to show the correct answer green
             Handler(Looper.getMainLooper()).postDelayed({
                 if (takenQuestions.isEmpty()) {
                     winsum += bigwin - winsum
-                    binding.priceSumTv.text = "Приз: $winsum\$"
+                    binding.prizeSumTv.text = getString(R.string.prize, winsum)
                     onTakeMoneyPressed()
                 } else {
                     showQuestions()
@@ -172,9 +173,9 @@ class GameActivity : BaseActivity() {
             view.setBackgroundColor(Color.RED)
             val dialog = AlertDialog.Builder(this)
                 //.setTitle("ВИ ПРОГРАЛИ")
-                .setMessage("ВИ ПРОГРАЛИ")
+                .setMessage(getString(R.string.fail))
                 .setCancelable(false)
-                .setPositiveButton("МЕНЮ") {_, _ -> finish() }
+                .setPositiveButton(android.R.string.ok) {_, _ -> finish() }
                 .create()
             dialog.show()
         }
@@ -206,12 +207,14 @@ class GameActivity : BaseActivity() {
         }
     }
 
+    // TODO: Question? Why use getString when we can write just R.string.victory_title
+
     private fun onTakeMoneyPressed() {
         val dialog = AlertDialog.Builder(this)
-                .setTitle("ВІТАЄМО")
-                .setMessage(binding.priceSumTv.text)
+                .setTitle(getString(R.string.victory_title))
+                .setMessage(binding.prizeSumTv.text)
                 .setCancelable(false)
-                .setPositiveButton("OK") {_, _ -> finish() }
+                .setPositiveButton(android.R.string.ok) {_, _ -> finish() }
                 .create()
         dialog.show()
     }
