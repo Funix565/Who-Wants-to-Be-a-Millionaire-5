@@ -20,6 +20,8 @@ class GameActivity : BaseActivity() {
 
     private var questionsList: MutableList<Question> = mutableListOf()
 
+    private var winsum: Int = 0
+
     private lateinit var takenQuestions: MutableList<Question>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,6 +102,20 @@ class GameActivity : BaseActivity() {
 
     private fun showQuestions() {
         binding.questionTv.text = takenQuestions[0].question
+
+        binding.answerButtonA.isEnabled = true
+        binding.answerButtonA.alpha = 1f
+        binding.answerButtonA.isClickable = true
+        binding.answerButtonB.isEnabled = true
+        binding.answerButtonB.alpha = 1f
+        binding.answerButtonB.isClickable = true
+        binding.answerButtonC.isEnabled = true
+        binding.answerButtonC.alpha = 1f
+        binding.answerButtonC.isClickable = true
+        binding.answerButtonD.isEnabled = true
+        binding.answerButtonD.alpha = 1f
+        binding.answerButtonD.isClickable = true
+
         binding.answerButtonA.setBackgroundColor(ContextCompat.getColor(this, R.color.purple_500))
         binding.answerButtonB.setBackgroundColor(ContextCompat.getColor(this, R.color.purple_500))
         binding.answerButtonC.setBackgroundColor(ContextCompat.getColor(this, R.color.purple_500))
@@ -163,13 +179,16 @@ class GameActivity : BaseActivity() {
     private fun onAnswerSelected(view: View) {
         if (view.tag as Int == 1) {
             view.setBackgroundColor(Color.GREEN)
+
             Handler(Looper.getMainLooper()).postDelayed({
                 if (takenQuestions.isEmpty()) {
                     onTakeMoneyPressed()
                 } else {
+                    // TODO: Increment winsum
                     showQuestions()
                 }
             }, 500)
+
         } else {
             view.setBackgroundColor(Color.RED)
             val dialog = AlertDialog.Builder(this)
@@ -190,16 +209,7 @@ class GameActivity : BaseActivity() {
             binding.fifFifButton.alpha = .5f
             binding.fifFifButton.isClickable = false
 
-            val v: Int = Random.nextInt(2)
-            if (v == 0) {
-                binding.answerButtonA.isEnabled = false
-                binding.answerButtonA.alpha = 0.5f
-                binding.answerButtonA.isClickable = false
-
-                binding.answerButtonD.isEnabled = false
-                binding.answerButtonD.alpha = 0.5f
-                binding.answerButtonD.isClickable = false
-            } else {
+            if (binding.answerButtonA.tag == 1 || binding.answerButtonD.tag == 1) {
                 binding.answerButtonB.isEnabled = false
                 binding.answerButtonB.alpha = 0.5f
                 binding.answerButtonB.isClickable = false
@@ -207,6 +217,14 @@ class GameActivity : BaseActivity() {
                 binding.answerButtonC.isEnabled = false
                 binding.answerButtonC.alpha = 0.5f
                 binding.answerButtonC.isClickable = false
+            } else if (binding.answerButtonB.tag == 1 || binding.answerButtonC.tag == 1) {
+                binding.answerButtonA.isEnabled = false
+                binding.answerButtonA.alpha = 0.5f
+                binding.answerButtonA.isClickable = false
+
+                binding.answerButtonD.isEnabled = false
+                binding.answerButtonD.alpha = 0.5f
+                binding.answerButtonD.isClickable = false
             }
         }
     }
