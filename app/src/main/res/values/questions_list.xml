@@ -1,83 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="question_1">
-        "Що допомагає дорослій черепасі захищатися від своїх ворогів?"
-    </string>
-    <string name="answer_1">
-        "Панцир"
-    </string>
-    <string name="option_a_1">
-        "Шкаралупа"
-    </string>
-    <string name="option_b_1">
-        "Броня"
-    </string>
-    <string name="option_c_1">
-        "Дах"
-    </string>
+    <string-array name="questions_and_answers">
+        <item>"Що допомагає дорослій черепасі захищатися від своїх ворогів?"</item>
+        <item>"Панцир"</item>
+        <item>"Шкаралупа"</item>
+        <item>"Броня"</item>
+        <item>"Дах"</item>
 
-    <string name="question_2">
-        "Хто проживав за адресою: Лондон, Бейкер стріт 221-б?"
-    </string>
-    <string name="answer_2">
-        "Шерлок Холмс"
-    </string>
-    <string name="option_a_2">
-        "Еркюль Пуаро"
-    </string>
-    <string name="option_b_2">
-        "Полковник Ісаєв"
-    </string>
-    <string name="option_c_2">
-        "Комісар Мегре"
-    </string>
+        <item>"Хто проживав за адресою: Лондон, Бейкер стріт 221-б?"</item>
+        <item>"Шерлок Холмс"</item>
+        <item>"Еркюль Пуаро"</item>
+        <item>"Полковник Ісаєв"</item>
+        <item>"Комісар Мегре"</item>
 
-    <string name="question_3">
-        "Якими словами закінчується афоризм Хемінгуея «Щастя – це міцне здоров’я і ..»?"
-    </string>
-    <string name="answer_3">
-        "Слабка пам’ять"
-    </string>
-    <string name="option_a_3">
-        "Хороші друзі"
-    </string>
-    <string name="option_b_3">
-        "Великі гроші"
-    </string>
-    <string name="option_c_3">
-        "Сильна воля"
-    </string>
+        <item>"Якими словами закінчується афоризм Хемінгуея «Щастя – це міцне здоров’я і ..»?"</item>
+        <item>"Слабка пам’ять"</item>
+        <item>"Хороші друзі"</item>
+        <item>"Великі гроші"</item>
+        <item>"Сильна воля"</item>
 
-    <string name="question_4">
-        "Ложечка з якого сплаву розплавиться під час помішування нею гарячого чаю?"
-    </string>
-    <string name="answer_4">
-        "Сплав Вуда"
-    </string>
-    <string name="option_a_4">
-        "Олов’яниста бронза"
-    </string>
-    <string name="option_b_4">
-        "Інвар"
-    </string>
-    <string name="option_c_4">
-        "Алюмель"
-    </string>
+        <item>"Ложечка з якого сплаву розплавиться під час помішування нею гарячого чаю?"</item>
+        <item>"Сплав Вуда"</item>
+        <item>"Олов’яниста бронза"</item>
+        <item>"Інвар"</item>
+        <item>"Алюмель"</item>
 
-    <string name="question_5">
-        "Як інакше називається алігаторова груша?"
-    </string>
-    <string name="answer_5">
-        "Авокадо"
-    </string>
-    <string name="option_a_5">
-        "Папайя"
-    </string>
-    <string name="option_b_5">
-        "Касава"
-    </string>
-    <string name="option_c_5">
-        "Маракуйя"
-    </string>
+        <item>"Як інакше називається алігаторова груша?"</item>
+        <item>"Авокадо"</item>
+        <item>"Папайя"</item>
+        <item>"Касава"</item>
+        <item>"Маракуйя"</item>
+
+        <item>"На якому кораблі почав свою кар’єру Гораціо Нельсон?"</item>
+        <item>"Резонабль"</item>
+        <item>"Вікторі"</item>
+        <item>"Тріумф"</item>
+        <item>"Каркас"</item>
+
+        <item>"Як називається довгий музичний твір, що виконується усім складом оркестру?"</item>
+        <item>"Симфонія"</item>
+        <item>"Концерт"</item>
+        <item>"П'єса"</item>
+        <item>"Етюд"</item>
+
+        <item>"Яка з цих стихій виникає внаслідок підводного землетрусу?"</item>
+        <item>"Цунамі"</item>
+        <item>"Тайфун"</item>
+        <item>"Смерч"</item>
+        <item>"Шторм"</item>
+
+        <item>"Як древні греки зневажливо відзивалися про іншомовних чужоземців?"</item>
+        <item>"Варвари"</item>
+        <item>"Троглодити"</item>
+        <item>"Дикуни"</item>
+        <item>"Вандали"</item>
+
+        <item>"Якими нитками шиють «невміло» сфабриковану справу?"</item>
+        <item>"Білими"</item>
+        <item>"Суворими"</item>
+        <item>"Дороговказними"</item>
+        <item>"Червоними"</item>
+
+        <item>"Як називається крита стоянка для літаків?"</item>
+        <item>"Ангари"</item>
+        <item>"Депо"</item>
+        <item>"Черепашка"</item>
+        <item>"Гараж"</item>
+
+        <item>"Як називається книга Герберта Уеллса про спробу завоювання Землі марсіанами?"</item>
+        <item>"Війна світів"</item>
+        <item>"Вони билися за Батьківщину"</item>
+        <item>"Війна і мир"</item>
+        <item>"Зоряні війни"</item>
+
+        <item>"Що під час розподілу квартири колишнім подружжям, зазвичай ділиться навпіл?"</item>
+        <item>"Жилплоща"</item>
+        <item>"Сусіди"</item>
+        <item>"Таргани"</item>
+        <item>"Ліжко"</item>
+
+        <item>"Коли тіні коротші?"</item>
+        <item>"Влітку"</item>
+        <item>"Однаково"</item>
+        <item>"Не знаю"</item>
+        <item>"Взимку"</item>
+
+        <item>"Хто приходить з подарунками до дітей на Новий Рік?"</item>
+        <item>"Дід Мороз"</item>
+        <item>"Дід Піхто"</item>
+        <item>"Дід Мазай"</item>
+        <item>"Дідусь та бабуся"</item>
+
+        <item>"Що є основним профілактичним засобом проти поширення СНІДу?"</item>
+        <item>"Презерватив"</item>
+        <item>"Одноразовий посуд"</item>
+        <item>"Одноразові чоловіки"</item>
+        <item>"Одноразове щеплення"</item>
+
+        <item>"Що Карл вкрав у Клари?"</item>
+        <item>"Корали"</item>
+        <item>"Кларнет"</item>
+        <item>"Крем-брюле"</item>
+        <item>"Кредит"</item>
+
+        <item>"Яка з цих космічних ракет не належить США?"</item>
+        <item>"Протон"</item>
+        <item>"Сатурн"</item>
+        <item>"Циклон"</item>
+        <item>"Юпітер"</item>
+
+        <item>"Як звали знаменитого тенора Паваротті?"</item>
+        <item>"Лучано"</item>
+        <item>"Хуліо"</item>
+        <item>"Плачідо"</item>
+        <item>"Хосе"</item>
+
+        <item>"Яка команда судді служить сигналом до початку боксерського поєдинку?"</item>
+        <item>"Бокс"</item>
+        <item>"Старт"</item>
+        <item>"Марш"</item>
+        <item>"Фас"</item>
+
+        <item>"Хто найчастіше користується швидкозшивачем?"</item>
+        <item>"Секретарі"</item>
+        <item>"Кравці"</item>
+        <item>"Хірурги"</item>
+        <item>"Шевці"</item>
+
+        <item>"Яка команда кінорежисера служить сигналом для включення камери?"</item>
+        <item>"Мотор"</item>
+        <item>"Від гвинта"</item>
+        <item>"Старт"</item>
+        <item>"Поїхали"</item>
+
+        <item>"Яка кислота виробляється в людському шлунку?"</item>
+        <item>"Соляна"</item>
+        <item>"Молочна"</item>
+        <item>"Сульфатна"</item>
+        <item>"Лимонна"</item>
+
+        <item>"У який лист завертають фарш для приготування голубців?"</item>
+        <item>"Капустяний"</item>
+        <item>"Виноградний"</item>
+        <item>"Банний"</item>
+        <item>"Лавровий"</item>
+
+    </string-array>
 
 </resources>

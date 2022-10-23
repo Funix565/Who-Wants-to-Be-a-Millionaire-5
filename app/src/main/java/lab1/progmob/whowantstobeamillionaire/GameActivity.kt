@@ -22,6 +22,7 @@ class GameActivity : BaseActivity() {
 
     private var winsum: Int = 60000
     private var incrementor: Int = 10000
+    private var step: Int = 10000
     private var bigwin:Int = 1000000
 
     private lateinit var takenQuestions: MutableList<Question>
@@ -53,57 +54,21 @@ class GameActivity : BaseActivity() {
 
     // TODO: Implement screen rotation and save current question
 
-    // No simple and efficient approach to iterate through a list of string resources with appending to similar name
-    // string-array -- complicated and ambiguous structure
     // getIdentifier -- is really slow, because it uses heavy reflection
     // Link: https://stackoverflow.com/q/5904554
-
-    // TODO: Anyway, try with string-array and index-padding
-    // For example, question = 1, options = question + 1, question + 2, question + 3, question + 4
     private fun fillQuestionAnswers() {
-        // Use view.tag for correct answer
-        // For every button one listener
-        val q1 = Question("Що допомагає дорослій черепасі захищатися від своїх ворогів?",
-                "Панцир",
-                "Шкаралупа",
-                "Броня",
-                "Дах")
-        questionsList.add(q1)
+        val questionsAndAnswersArray: Array<String> = resources.getStringArray(R.array.questions_and_answers)
 
-        val q2 = Question("Хто проживав за адресою: Лондон, Бейкер стріт 221-б?",
-                            "Шерлок Холмс",
-                            "Еркюль Пуаро",
-                            "Полковник Ісаєв",
-                            "Комісар Мегре")
-        questionsList.add(q2)
+        var index = 0
+        while (index < questionsAndAnswersArray.size) {
+            val q = Question(questionsAndAnswersArray[index++],
+            questionsAndAnswersArray[index++],
+            questionsAndAnswersArray[index++],
+            questionsAndAnswersArray[index++],
+            questionsAndAnswersArray[index++])
 
-        val q3 = Question("Якими словами закінчується афоризм Хемінгуея «Щастя – це міцне здоров’я і ..»?",
-                            "Слабка пам’ять",
-                            "Хороші друзі",
-                            "Великі гроші",
-                            "Сильна воля")
-        questionsList.add(q3)
-
-        val q4 = Question("Ложечка з якого сплаву розплавиться під час помішування нею гарячого чаю?",
-                            "Сплав Вуда",
-                            "Олов’яниста бронза",
-                            "Інвар",
-                            "Алюмель")
-        questionsList.add(q4)
-
-        val q5 = Question("Як інакше називається алігаторова груша?",
-                            "Авокадо",
-                            "Папайя",
-                            "Касава",
-                            "Маракуйя")
-        questionsList.add(q5)
-
-        val q6 = Question("На якому кораблі почав свою кар’єру Гораціо Нельсон?",
-                            "Резонабль",
-                            "Вікторі",
-                            "Тріумф",
-                            "Каркасс")
-        questionsList.add(q6)
+            questionsList.add(q)
+        }
 
         takenQuestions = questionsList.shuffled().take(settings.questionsCount).toMutableList()
     }
@@ -188,10 +153,11 @@ class GameActivity : BaseActivity() {
         if (view.tag as Int == 1) {
             view.setBackgroundColor(Color.GREEN)
             winsum += incrementor
-            incrementor += incrementor
+            incrementor += step
 
             binding.priceSumTv.text = "Приз: $winsum\$"
 
+            // A little delay to show the correct answer green
             Handler(Looper.getMainLooper()).postDelayed({
                 if (takenQuestions.isEmpty()) {
                     winsum += bigwin - winsum
