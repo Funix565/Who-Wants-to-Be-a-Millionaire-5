@@ -20,7 +20,9 @@ class GameActivity : BaseActivity() {
 
     private var questionsList: MutableList<Question> = mutableListOf()
 
-    private var winsum: Int = 0
+    private var winsum: Int = 60000
+    private var incrementor: Int = 10000
+    private var bigwin:Int = 1000000
 
     private lateinit var takenQuestions: MutableList<Question>
 
@@ -37,7 +39,6 @@ class GameActivity : BaseActivity() {
             binding.fifFifButton.isClickable = false
         }
 
-        // TODO: Prepare questions
         fillQuestionAnswers()
         showQuestions()
 
@@ -50,7 +51,7 @@ class GameActivity : BaseActivity() {
         binding.takeMoneyButton.setOnClickListener { onTakeMoneyPressed() }
     }
 
-    // TODO: Implement screen rotation
+    // TODO: Implement screen rotation and save current question
 
     // No simple and efficient approach to iterate through a list of string resources with appending to similar name
     // string-array -- complicated and ambiguous structure
@@ -96,6 +97,13 @@ class GameActivity : BaseActivity() {
                             "Касава",
                             "Маракуйя")
         questionsList.add(q5)
+
+        val q6 = Question("На якому кораблі почав свою кар’єру Гораціо Нельсон?",
+                            "Резонабль",
+                            "Вікторі",
+                            "Тріумф",
+                            "Каркасс")
+        questionsList.add(q6)
 
         takenQuestions = questionsList.shuffled().take(settings.questionsCount).toMutableList()
     }
@@ -179,12 +187,17 @@ class GameActivity : BaseActivity() {
     private fun onAnswerSelected(view: View) {
         if (view.tag as Int == 1) {
             view.setBackgroundColor(Color.GREEN)
+            winsum += incrementor
+            incrementor += incrementor
+
+            binding.priceSumTv.text = "Приз: $winsum\$"
 
             Handler(Looper.getMainLooper()).postDelayed({
                 if (takenQuestions.isEmpty()) {
+                    winsum += bigwin - winsum
+                    binding.priceSumTv.text = "Приз: $winsum\$"
                     onTakeMoneyPressed()
                 } else {
-                    // TODO: Increment winsum
                     showQuestions()
                 }
             }, 500)
@@ -201,8 +214,6 @@ class GameActivity : BaseActivity() {
         }
     }
 
-
-    // TODO: Do not disable correct answer
     private fun onFifFifPressed() {
         if (binding.fifFifButton.isEnabled) {
             binding.fifFifButton.isEnabled = false
@@ -238,15 +249,6 @@ class GameActivity : BaseActivity() {
                 .create()
         dialog.show()
     }
-
-//    private fun onAnswerSelected(view: View) {
-//        if (view.tag as Int == correctIndex) {
-//            // Fill next question
-//                // if it was the last question -- show Congratulation activity or pop up or dialog
-//        } else {
-//            // Fail activity or pop up or dialog
-//        }
-//    }
 
     companion object {
         @JvmStatic val EXTRA_SETTINGS = "EXTRA_SETTINGS"
