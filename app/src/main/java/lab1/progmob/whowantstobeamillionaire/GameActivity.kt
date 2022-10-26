@@ -159,15 +159,20 @@ class GameActivity : BaseActivity() {
 
             // TODO: Maybe disable button because I can click several times and increase prize
             // A little delay to show the correct answer green
-            Handler(Looper.getMainLooper()).postDelayed({
-                if (takenQuestions.isEmpty()) {
-                    winsum += bigwin - winsum
-                    binding.prizeSumTv.text = getString(R.string.prize, winsum)
-                    onTakeMoneyPressed()
-                } else {
-                    showQuestions()
-                }
-            }, 500)
+            if (takenQuestions.isEmpty()) {
+                winsum += bigwin - winsum
+                binding.prizeSumTv.text = getString(R.string.prize, winsum)
+                onTakeMoneyPressed()
+            } else {
+                val dialog = AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.next_title))
+                    .setMessage(getString(R.string.next_or_take))
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.next_question) {_, _ -> showQuestions() }
+                    .setNegativeButton(R.string.take_money) {_, _ -> onTakeMoneyPressed()}
+                    .create()
+                dialog.show()
+            }
 
         } else {
             view.setBackgroundColor(Color.RED)
@@ -206,8 +211,6 @@ class GameActivity : BaseActivity() {
             }
         }
     }
-
-    // TODO: Question? Why use getString when we can write just R.string.victory_title
 
     private fun onTakeMoneyPressed() {
         val dialog = AlertDialog.Builder(this)

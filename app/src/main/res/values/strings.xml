@@ -2,6 +2,9 @@
     <string name="app_name">Who Wants to Be a Millionaire</string>
     <string name="prize">Приз: %1$d$</string>
     <string name="fail">ВИ ПРОГРАЛИ</string>
+    <string name="next_title">Що робити далі?</string>
+    <string name="next_or_take">Продовжити чи забрати гроші?</string>
+    <string name="next_question">Наступне запитання</string>
     <string name="victory_title">ВІТАЄМО</string>
     <string name="take_money">Забрати гроші</string>
     <string name="fifty_fifty">50/50</string>

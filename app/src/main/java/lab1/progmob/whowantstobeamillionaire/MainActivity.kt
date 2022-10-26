@@ -23,15 +23,12 @@ class MainActivity : BaseActivity() {
         settings = savedInstanceState?.getParcelable(KEY_SETTINGS) ?: Settings.DEFAULT
     }
 
-    // TODO: Save settings check box and number questions
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelable(KEY_SETTINGS, settings)
     }
 
     private fun onStartGamePressed() {
-        // TODO: Show questions
-        // TODO: Show dialog when VICTORY/TAKE (with N$ money) OR FAIL
         val intent = Intent(this, GameActivity::class.java)
         intent.putExtra(GameActivity.EXTRA_SETTINGS, settings)
         startActivity(intent)
@@ -47,8 +44,6 @@ class MainActivity : BaseActivity() {
     }
 
     private fun onGameSettingsPressed() {
-        // TODO: Pay attention to selected item in Spinner
-
         // Create a thing and say Android that we would like to do it
         val intent = Intent(this, SettingsActivity::class.java)
 
