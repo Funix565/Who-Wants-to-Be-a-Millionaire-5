@@ -6,6 +6,7 @@ import android.os.Bundle
 import lab1.progmob.whowantstobeamillionaire.databinding.ActivityMainBinding
 import lab1.progmob.whowantstobeamillionaire.model.Settings
 
+// TODO: I'm going to create a new branch and rewrite the app using Fragments
 class MainActivity : BaseActivity() {
 
     // We use View Binding
