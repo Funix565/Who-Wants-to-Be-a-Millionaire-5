@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#CBC3E3"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/logo_iv"
+        android:layout_width="@dimen/logo_wh"
+        android:layout_height="@dimen/logo_wh"
+        android:src="@drawable/millionlogo"
+        android:contentDescription="@string/game_logo_desc"
+        android:scaleType="fitEnd"/>
+
+    <Button
+        android:id="@+id/start_game_button"
+        android:layout_width="@dimen/button_main_width"
+        android:layout_height="wrap_content"
+        android:text="@string/start_game"
+        android:textColor="@color/yellow"
+        android:backgroundTint="@color/violet" />
+
+    <Button
+        android:id="@+id/game_settings_button"
+        android:layout_width="@dimen/button_main_width"
+        android:layout_height="wrap_content"
+        android:text="@string/settings"
+        android:textColor="@color/yellow"
+        android:backgroundTint="@color/violet" />
+
+</LinearLayout>
