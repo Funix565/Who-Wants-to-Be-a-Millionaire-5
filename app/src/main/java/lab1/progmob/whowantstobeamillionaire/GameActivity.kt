@@ -3,8 +3,6 @@ package lab1.progmob.whowantstobeamillionaire
 import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import androidx.core.content.ContextCompat
 import lab1.progmob.whowantstobeamillionaire.databinding.ActivityGameBinding
@@ -157,8 +155,6 @@ class GameActivity : BaseActivity() {
 
             binding.prizeSumTv.text = getString(R.string.prize, winsum)
 
-            // TODO: Maybe disable button because I can click several times and increase prize
-            // A little delay to show the correct answer green
             if (takenQuestions.isEmpty()) {
                 winsum += bigwin - winsum
                 binding.prizeSumTv.text = getString(R.string.prize, winsum)
