@@ -63,7 +63,7 @@ class SettingsFragment : Fragment(), HasCustomTitle, HasCustomAction {
     private fun setupSpinner() {
         questionsNumList = IntArray(6) {it + 5}.toList()
         adapter = ArrayAdapter(
-            requireContext(),
+            requireActivity(),
             android.R.layout.simple_spinner_item,
             questionsNumList
         )

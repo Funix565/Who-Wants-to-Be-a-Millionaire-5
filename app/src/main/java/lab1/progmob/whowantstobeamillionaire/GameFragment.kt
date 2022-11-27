@@ -1,6 +1,7 @@
 package lab1.progmob.whowantstobeamillionaire
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +16,9 @@ import lab1.progmob.whowantstobeamillionaire.model.Question
 import lab1.progmob.whowantstobeamillionaire.model.Settings
 import kotlin.random.Random
 
-class GameFragment : Fragment(), HasCustomTitle {
+class GameFragment : Fragment(), HasCustomTitle, TaskListener {
+
+    lateinit var app: App
 
     private lateinit var binding: FragmentGameBinding
 
@@ -32,9 +35,11 @@ class GameFragment : Fragment(), HasCustomTitle {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        settings = savedInstanceState?.getParcelable<Settings>(KEY_SETTINGS) ?:
+        settings = savedInstanceState?.getParcelable(KEY_SETTINGS) ?:
             arguments?.getParcelable(ARG_SETTINGS) ?:
                 throw IllegalArgumentException("You need to specify settings to launch this fragment")
+
+        app = requireActivity().applicationContext as App
     }
 
     override fun onCreateView(
@@ -51,7 +56,6 @@ class GameFragment : Fragment(), HasCustomTitle {
         }
 
         fillQuestionAnswers()
-        showQuestions()
 
         binding.answerButtonA.setOnClickListener { view -> onAnswerSelected(view) }
         binding.answerButtonB.setOnClickListener { view -> onAnswerSelected(view) }
@@ -64,29 +68,37 @@ class GameFragment : Fragment(), HasCustomTitle {
         return binding.root
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-    }
-
     override fun getTitleRes(): Int = R.string.game_bar
 
     // getIdentifier -- is really slow, because it uses heavy reflection
     // Link: https://stackoverflow.com/q/5904554
     private fun fillQuestionAnswers() {
-        val questionsAndAnswersArray: Array<String> = resources.getStringArray(R.array.questions_and_answers)
-
-        var index = 0
-        while (index < questionsAndAnswersArray.size) {
-            val q = Question(questionsAndAnswersArray[index++],
-                questionsAndAnswersArray[index++],
-                questionsAndAnswersArray[index++],
-                questionsAndAnswersArray[index++],
-                questionsAndAnswersArray[index++])
-
-            questionsList.add(q)
+        // Here we use Service
+        Intent(requireActivity(), LoadQuestionsFromFileService::class.java).apply {
+            action = LoadQuestionsFromFileService.ACTION_LOAD_QUESTIONS
+            requireActivity().startService(this)
         }
+    }
+
+    // This method is also called in a separate thread because Service notifies listeners
+    override fun onCompleted(questions: MutableList<Question>) {
+        // Assign a copy
+        questionsList = questions.toMutableList()
 
         takenQuestions = questionsList.shuffled().take(settings.questionsCount).toMutableList()
+
+        // UI must be updated in the main thread
+        showQuestions()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        app.addListener(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        app.removeListener(this)
     }
 
     private fun showQuestions() {
@@ -105,10 +117,10 @@ class GameFragment : Fragment(), HasCustomTitle {
         binding.answerButtonD.alpha = 1f
         binding.answerButtonD.isClickable = true
 
-        binding.answerButtonA.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.purple_500))
-        binding.answerButtonB.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.purple_500))
-        binding.answerButtonC.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.purple_500))
-        binding.answerButtonD.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.purple_500))
+        binding.answerButtonA.setBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.purple_500))
+        binding.answerButtonB.setBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.purple_500))
+        binding.answerButtonC.setBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.purple_500))
+        binding.answerButtonD.setBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.purple_500))
 
         when (Random.nextInt(4)) {
             0 -> {
@@ -162,6 +174,11 @@ class GameFragment : Fragment(), HasCustomTitle {
         }
 
         takenQuestions.removeAt(0)
+
+        // Buttons are invisible while questions are being loaded.
+        // So, make them visible when everything is ready
+        binding.takeMoneyButton.visibility = View.VISIBLE
+        binding.fifFifButton.visibility = View.VISIBLE
     }
 
     private fun onAnswerSelected(view: View) {
@@ -177,7 +194,7 @@ class GameFragment : Fragment(), HasCustomTitle {
                 binding.prizeSumTv.text = getString(R.string.prize, winsum)
                 onTakeMoneyPressed()
             } else {
-                val dialog = AlertDialog.Builder(requireContext())
+                val dialog = AlertDialog.Builder(requireActivity())
                     .setTitle(getString(R.string.next_title))
                     .setMessage(getString(R.string.next_or_take))
                     .setCancelable(false)
@@ -189,7 +206,7 @@ class GameFragment : Fragment(), HasCustomTitle {
 
         } else {
             view.setBackgroundColor(Color.RED)
-            val dialog = AlertDialog.Builder(requireContext())
+            val dialog = AlertDialog.Builder(requireActivity())
                 .setMessage(getString(R.string.fail))
                 .setCancelable(false)
                 .setPositiveButton(android.R.string.ok) {_, _ -> navigator().goToMenu() }
@@ -225,7 +242,7 @@ class GameFragment : Fragment(), HasCustomTitle {
     }
 
     private fun onTakeMoneyPressed() {
-        val dialog = AlertDialog.Builder(requireContext())
+        val dialog = AlertDialog.Builder(requireActivity())
             .setTitle(getString(R.string.victory_title))
             .setMessage(binding.prizeSumTv.text)
             .setCancelable(false)
