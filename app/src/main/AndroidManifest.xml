@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WhoWantsToBeAMillionaire"
+        android:name=".App"
         tools:targetApi="31">
 
         <activity
@@ -20,21 +21,21 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
         </activity>
 
-        <activity
-            android:name=".SettingsActivity"
-            android:label="Settings"
-            android:parentActivityName=".MainActivity"/>
+        <service
+            android:name=".LoadQuestionsFromFileService"
+            android:exported="false" />
 
-        <activity
-            android:name=".GameActivity"
-            android:label="Game"
-            android:parentActivityName=".MainActivity" />
+<!--        <activity-->
+<!--            android:name=".SettingsActivity"-->
+<!--            android:label="Settings"-->
+<!--            android:parentActivityName=".MainActivity"/>-->
+
+<!--        <activity-->
+<!--            android:name=".GameActivity"-->
+<!--            android:label="Game"-->
+<!--            android:parentActivityName=".MainActivity" />-->
 
     </application>
 

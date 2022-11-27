@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#CBC3E3">
+
+    <TextView
+        android:id="@+id/prize_sum_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/general_margins"
+        android:shadowColor="@color/black"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="0.5"
+        android:textColor="@color/yellow"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/question_tv"
+        android:layout_width="@dimen/question_tv_width"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/general_margins"
+        android:background="@color/violet"
+        android:padding="@dimen/question_tv_padding"
+        android:textAlignment="center"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/answer_button_a"
+        style="@style/AnswerButtonStyle"
+        android:layout_alignStart="@id/question_tv"
+        android:layout_below="@id/question_tv" />
+
+    <Button
+        android:id="@+id/answer_button_b"
+        style="@style/AnswerButtonStyle"
+        android:layout_alignEnd="@id/question_tv"
+        android:layout_below="@id/question_tv" />
+
+    <Button
+        android:id="@+id/answer_button_c"
+        style="@style/AnswerButtonStyle"
+        android:layout_below="@id/answer_button_a"
+        android:layout_alignStart="@id/question_tv" />
+
+    <Button
+        android:id="@+id/answer_button_d"
+        style="@style/AnswerButtonStyle"
+        android:layout_below="@id/answer_button_b"
+        android:layout_alignEnd="@id/question_tv" />
+
+    <Button
+        android:id="@+id/take_money_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/answer_button_c"
+        android:layout_marginTop="100dp"
+        android:backgroundTint="@color/yellow"
+        android:text="@string/take_money"
+        android:textColor="@color/black"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/fif_fif_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/question_tv"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/yellow"
+        android:textColor="@color/black"
+        android:text="@string/fifty_fifty"
+        android:visibility="invisible"/>
+
+</RelativeLayout>

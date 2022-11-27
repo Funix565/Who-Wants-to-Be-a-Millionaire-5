@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#CBC3E3">
+
+    <Spinner
+        android:id="@+id/numq_spinner"
+        android:layout_margin="@dimen/general_margins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@id/checkbox50"
+        android:layout_centerInParent="true" />
+
+    <CheckBox
+        android:id="@+id/checkbox50"
+        android:layout_margin="@dimen/general_margins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerInParent="true"
+        android:text="@string/fifty_fifty_long" />
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/general_margins"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/checkbox50"
+        android:text="@string/submit_settings"/>
+
+</RelativeLayout>

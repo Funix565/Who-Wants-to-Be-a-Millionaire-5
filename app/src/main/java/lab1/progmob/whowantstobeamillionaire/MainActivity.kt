@@ -1,63 +1,143 @@
 package lab1.progmob.whowantstobeamillionaire
 
-import android.app.Activity
-import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.os.Parcelable
+import android.view.MenuItem
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentResultListener
+import androidx.lifecycle.LifecycleOwner
+import lab1.progmob.whowantstobeamillionaire.contract.*
 import lab1.progmob.whowantstobeamillionaire.databinding.ActivityMainBinding
 import lab1.progmob.whowantstobeamillionaire.model.Settings
 
-class MainActivity : BaseActivity() {
+class MainActivity : AppCompatActivity(), Navigator {
 
-    // We use View Binding
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var settings : Settings
+    private val currentFragment: Fragment
+        get() = supportFragmentManager.findFragmentById(R.id.fragmentContainer)!!
+
+    private val fragmentListener = object : FragmentManager.FragmentLifecycleCallbacks() {
+        override fun onFragmentViewCreated(fm: FragmentManager, f: Fragment, v: View, savedInstanceState: Bundle?) {
+            super.onFragmentViewCreated(fm, f, v, savedInstanceState)
+            updateUi()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater).also{ setContentView(it.root) }
+        setSupportActionBar(binding.toolbar)
 
-        binding.startGameButton.setOnClickListener { onStartGamePressed() }
-        binding.gameSettingsButton.setOnClickListener { onGameSettingsPressed() }
+        // Activity is called for the first time
+        // Now the MainActivity class works only on the first run. It checks its state and creates a fragment.
+        // Then we work only with fragments.
+        if (savedInstanceState == null) {
+            // Adds fragment into container. <where>, <what>
+            supportFragmentManager
+                .beginTransaction()
+                .add(R.id.fragmentContainer, MainFragment())
+                .commit()
+        }
 
-        settings = savedInstanceState?.getParcelable(KEY_SETTINGS) ?: Settings.DEFAULT
+        supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentListener, false)
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putParcelable(KEY_SETTINGS, settings)
+    override fun onDestroy() {
+        super.onDestroy()
+        supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentListener)
     }
 
-    private fun onStartGamePressed() {
-        val intent = Intent(this, GameActivity::class.java)
-        intent.putExtra(GameActivity.EXTRA_SETTINGS, settings)
-        startActivity(intent)
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
-    // Here we get the info after startActivityForResult
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == SETTINGS_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            settings = data?.getParcelableExtra(SettingsActivity.EXTRA_SETTINGS) ?:
-                    throw IllegalArgumentException("Can't get the updated data from settings activity")
+    override fun showGameScreen(settings: Settings) {
+        launchFragment(GameFragment.newInstance(settings))
+    }
+
+    override fun showSettingsScreen(settings: Settings) {
+        launchFragment(SettingsFragment.newInstance(settings))
+    }
+
+    override fun goBack() {
+        onBackPressed()
+    }
+
+    override fun goToMenu() {
+        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    }
+
+    override fun <T : Parcelable> publishResult(result: T) {
+        supportFragmentManager.setFragmentResult(result.javaClass.name, bundleOf(KEY_RESULT to result))
+    }
+
+    override fun <T : Parcelable> listenResult(
+        clazz: Class<T>,
+        owner: LifecycleOwner,
+        listener: ResultListener<T>
+    ) {
+        supportFragmentManager.setFragmentResultListener(clazz.name, owner, FragmentResultListener { key, bundle ->
+            listener.invoke(bundle.getParcelable(KEY_RESULT)!!)
+        })
+    }
+
+    private fun launchFragment(fragment: Fragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.fragmentContainer, fragment)
+            .commit()
+    }
+
+    private fun updateUi() {
+        val fragment = currentFragment
+
+        if (fragment is HasCustomTitle) {
+            binding.toolbar.title = getString(fragment.getTitleRes())
+        } else {
+            binding.toolbar.title = getString(R.string.app_name)
+        }
+
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setDisplayShowHomeEnabled(true)
+        }
+        else {
+            supportActionBar?.setDisplayHomeAsUpEnabled(false)
+            supportActionBar?.setDisplayShowHomeEnabled(false)
+        }
+
+        if (fragment is HasCustomAction) {
+            createCustomToolBarAction(fragment.getCustomAction())
+        }
+        else {
+            binding.toolbar.menu.clear()
         }
     }
 
-    private fun onGameSettingsPressed() {
-        // Create a thing and say Android that we would like to do it
-        val intent = Intent(this, SettingsActivity::class.java)
+    private fun createCustomToolBarAction(action: CustomAction) {
+        val iconDrawable = DrawableCompat.wrap(ContextCompat.getDrawable(this, action.iconRes)!!)
+        iconDrawable.setTint(Color.WHITE)
 
-        // Pass additional data to the Activity we want to start
-        intent.putExtra(SettingsActivity.EXTRA_SETTINGS, settings)
-        // Call startActivityForResult because we want something back after this call
-        // SETTINGS_REQUEST_CODE -- We need this because we want to know, who sends the result back. Could be many activities
-        startActivityForResult(intent, SETTINGS_REQUEST_CODE)
+        val menuItem = binding.toolbar.menu.add(action.textRes)
+        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+        menuItem.icon = iconDrawable
+        menuItem.setOnMenuItemClickListener {
+            action.onCustomAction.run()
+            return@setOnMenuItemClickListener true
+        }
     }
 
     companion object {
-        @JvmStatic private val KEY_SETTINGS = "SETTINGS"
-
-        // A unique integer.
-        @JvmStatic private val SETTINGS_REQUEST_CODE = 1
+        @JvmStatic private val KEY_RESULT = "RESULT"
     }
 }

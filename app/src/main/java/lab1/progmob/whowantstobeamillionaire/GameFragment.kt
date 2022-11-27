@@ -1,18 +1,26 @@
 package lab1.progmob.whowantstobeamillionaire
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import lab1.progmob.whowantstobeamillionaire.databinding.ActivityGameBinding
+import androidx.fragment.app.Fragment
+import lab1.progmob.whowantstobeamillionaire.contract.HasCustomTitle
+import lab1.progmob.whowantstobeamillionaire.contract.navigator
+import lab1.progmob.whowantstobeamillionaire.databinding.FragmentGameBinding
 import lab1.progmob.whowantstobeamillionaire.model.Question
 import lab1.progmob.whowantstobeamillionaire.model.Settings
 import kotlin.random.Random
 
-class GameActivity : BaseActivity() {
+class GameFragment : Fragment(), HasCustomTitle, TaskListener {
 
-    private lateinit var binding: ActivityGameBinding
+    lateinit var app: App
+
+    private lateinit var binding: FragmentGameBinding
 
     private lateinit var settings: Settings
 
@@ -27,10 +35,19 @@ class GameActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityGameBinding.inflate(layoutInflater).also { setContentView(it.root) }
+        settings = savedInstanceState?.getParcelable(KEY_SETTINGS) ?:
+            arguments?.getParcelable(ARG_SETTINGS) ?:
+                throw IllegalArgumentException("You need to specify settings to launch this fragment")
 
-        settings = intent.getParcelableExtra(EXTRA_SETTINGS) ?:
-            throw IllegalArgumentException("Can't launch GameActivity without options")
+        app = requireActivity().applicationContext as App
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentGameBinding.inflate(inflater, container, false)
 
         if (!settings.is50Enabled) {
             binding.fifFifButton.isEnabled = false
@@ -39,7 +56,6 @@ class GameActivity : BaseActivity() {
         }
 
         fillQuestionAnswers()
-        showQuestions()
 
         binding.answerButtonA.setOnClickListener { view -> onAnswerSelected(view) }
         binding.answerButtonB.setOnClickListener { view -> onAnswerSelected(view) }
@@ -48,27 +64,41 @@ class GameActivity : BaseActivity() {
 
         binding.fifFifButton.setOnClickListener { onFifFifPressed() }
         binding.takeMoneyButton.setOnClickListener { onTakeMoneyPressed() }
+
+        return binding.root
     }
 
-    // TODO: Implement screen rotation and save current question
+    override fun getTitleRes(): Int = R.string.game_bar
 
     // getIdentifier -- is really slow, because it uses heavy reflection
     // Link: https://stackoverflow.com/q/5904554
     private fun fillQuestionAnswers() {
-        val questionsAndAnswersArray: Array<String> = resources.getStringArray(R.array.questions_and_answers)
-
-        var index = 0
-        while (index < questionsAndAnswersArray.size) {
-            val q = Question(questionsAndAnswersArray[index++],
-            questionsAndAnswersArray[index++],
-            questionsAndAnswersArray[index++],
-            questionsAndAnswersArray[index++],
-            questionsAndAnswersArray[index++])
-
-            questionsList.add(q)
+        // Here we use Service
+        Intent(requireActivity(), LoadQuestionsFromFileService::class.java).apply {
+            action = LoadQuestionsFromFileService.ACTION_LOAD_QUESTIONS
+            requireActivity().startService(this)
         }
+    }
+
+    // This method is also called in a separate thread because Service notifies listeners
+    override fun onCompleted(questions: MutableList<Question>) {
+        // Assign a copy
+        questionsList = questions.toMutableList()
 
         takenQuestions = questionsList.shuffled().take(settings.questionsCount).toMutableList()
+
+        // UI must be updated in the main thread
+        showQuestions()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        app.addListener(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        app.removeListener(this)
     }
 
     private fun showQuestions() {
@@ -87,10 +117,10 @@ class GameActivity : BaseActivity() {
         binding.answerButtonD.alpha = 1f
         binding.answerButtonD.isClickable = true
 
-        binding.answerButtonA.setBackgroundColor(ContextCompat.getColor(this, R.color.purple_500))
-        binding.answerButtonB.setBackgroundColor(ContextCompat.getColor(this, R.color.purple_500))
-        binding.answerButtonC.setBackgroundColor(ContextCompat.getColor(this, R.color.purple_500))
-        binding.answerButtonD.setBackgroundColor(ContextCompat.getColor(this, R.color.purple_500))
+        binding.answerButtonA.setBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.purple_500))
+        binding.answerButtonB.setBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.purple_500))
+        binding.answerButtonC.setBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.purple_500))
+        binding.answerButtonD.setBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.purple_500))
 
         when (Random.nextInt(4)) {
             0 -> {
@@ -144,9 +174,13 @@ class GameActivity : BaseActivity() {
         }
 
         takenQuestions.removeAt(0)
+
+        // Buttons are invisible while questions are being loaded.
+        // So, make them visible when everything is ready
+        binding.takeMoneyButton.visibility = View.VISIBLE
+        binding.fifFifButton.visibility = View.VISIBLE
     }
 
-    // Button delay: https://stackoverflow.com/q/61023968
     private fun onAnswerSelected(view: View) {
         if (view.tag as Int == 1) {
             view.setBackgroundColor(Color.GREEN)
@@ -160,7 +194,7 @@ class GameActivity : BaseActivity() {
                 binding.prizeSumTv.text = getString(R.string.prize, winsum)
                 onTakeMoneyPressed()
             } else {
-                val dialog = AlertDialog.Builder(this)
+                val dialog = AlertDialog.Builder(requireActivity())
                     .setTitle(getString(R.string.next_title))
                     .setMessage(getString(R.string.next_or_take))
                     .setCancelable(false)
@@ -172,11 +206,10 @@ class GameActivity : BaseActivity() {
 
         } else {
             view.setBackgroundColor(Color.RED)
-            val dialog = AlertDialog.Builder(this)
-                //.setTitle("ВИ ПРОГРАЛИ")
+            val dialog = AlertDialog.Builder(requireActivity())
                 .setMessage(getString(R.string.fail))
                 .setCancelable(false)
-                .setPositiveButton(android.R.string.ok) {_, _ -> finish() }
+                .setPositiveButton(android.R.string.ok) {_, _ -> navigator().goToMenu() }
                 .create()
             dialog.show()
         }
@@ -209,16 +242,26 @@ class GameActivity : BaseActivity() {
     }
 
     private fun onTakeMoneyPressed() {
-        val dialog = AlertDialog.Builder(this)
-                .setTitle(getString(R.string.victory_title))
-                .setMessage(binding.prizeSumTv.text)
-                .setCancelable(false)
-                .setPositiveButton(android.R.string.ok) {_, _ -> finish() }
-                .create()
+        val dialog = AlertDialog.Builder(requireActivity())
+            .setTitle(getString(R.string.victory_title))
+            .setMessage(binding.prizeSumTv.text)
+            .setCancelable(false)
+            .setPositiveButton(android.R.string.ok) {_, _ -> navigator().goToMenu() }
+            .create()
         dialog.show()
     }
 
     companion object {
-        @JvmStatic val EXTRA_SETTINGS = "EXTRA_SETTINGS"
+        @JvmStatic private val ARG_SETTINGS = "ARG_SETTINGS"
+        @JvmStatic private val KEY_SETTINGS = "KEY_SETTINGS"
+
+        @JvmStatic
+        fun newInstance(settings: Settings): GameFragment {
+            val args = Bundle()
+            args.putParcelable(ARG_SETTINGS, settings)
+            val fragment = GameFragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }
