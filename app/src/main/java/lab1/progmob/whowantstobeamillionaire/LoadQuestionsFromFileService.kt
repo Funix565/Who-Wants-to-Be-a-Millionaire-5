@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.IBinder
 import lab1.progmob.whowantstobeamillionaire.model.Question
 
+// TODO: Use ExecutorService
 class LoadQuestionsFromFileService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
