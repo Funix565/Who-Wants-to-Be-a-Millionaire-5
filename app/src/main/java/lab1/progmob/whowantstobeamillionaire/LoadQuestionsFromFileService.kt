@@ -3,20 +3,32 @@ package lab1.progmob.whowantstobeamillionaire
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import android.util.Log
 import lab1.progmob.whowantstobeamillionaire.model.Question
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
+// TODO: Use ExecutorService
 class LoadQuestionsFromFileService : Service() {
 
+    private lateinit var executorService: ExecutorService
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.d("LAB3", "LoadQuestionsFromFileService in onStartCommand")
+        Log.d("LAB3", "Executed on: ${Thread.currentThread().id}")
 
         val action = intent!!.action
+
+        executorService = Executors.newSingleThreadExecutor()
 
         when (action) {
             ACTION_LOAD_QUESTIONS -> {
                 // The service runs in a separate thread
-                Thread {
+                executorService.submit {
+                    Log.d("LAB3", "LoadQuestionsFromFileService in executorService.submit")
+                    Log.d("LAB3", "Executed on: ${Thread.currentThread().id}")
                     loadQuestions()
-                }.start()
+                }
             }
         }
 
@@ -28,6 +40,9 @@ class LoadQuestionsFromFileService : Service() {
     }
 
     private fun loadQuestions() {
+        Log.d("LAB3", "LoadQuestionsFromFileService in loadQuestions")
+        Log.d("LAB3", "Executed on: ${Thread.currentThread().id}")
+
         val app:App = application as App
 
         // Load questions in this variable
@@ -35,7 +50,7 @@ class LoadQuestionsFromFileService : Service() {
 
         try {
             // Simulate long run
-            Thread.sleep(1000)
+            Thread.sleep(2000)
 
             val questionsAndAnswersArray: Array<String> = resources.getStringArray(R.array.questions_and_answers)
 
@@ -56,6 +71,7 @@ class LoadQuestionsFromFileService : Service() {
             e.printStackTrace()
         }
 
+        executorService.shutdown()
         stopSelf()
     }
 

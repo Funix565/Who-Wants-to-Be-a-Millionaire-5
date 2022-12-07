@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,7 +56,11 @@ class GameFragment : Fragment(), HasCustomTitle, TaskListener {
             binding.fifFifButton.isClickable = false
         }
 
+        Log.d("LAB3", "GameFragment onCreateView before fillQuestions")
+        Log.d("LAB3", "Executed on: ${Thread.currentThread().id}")
         fillQuestionAnswers()
+        Log.d("LAB3", "GameFragment onCreateView after fillQuestions")
+        Log.d("LAB3", "Executed on: ${Thread.currentThread().id}")
 
         binding.answerButtonA.setOnClickListener { view -> onAnswerSelected(view) }
         binding.answerButtonB.setOnClickListener { view -> onAnswerSelected(view) }
@@ -73,6 +78,9 @@ class GameFragment : Fragment(), HasCustomTitle, TaskListener {
     // getIdentifier -- is really slow, because it uses heavy reflection
     // Link: https://stackoverflow.com/q/5904554
     private fun fillQuestionAnswers() {
+        Log.d("LAB3", "GameFragment in fillQuestions")
+        Log.d("LAB3", "Executed on: ${Thread.currentThread().id}")
+
         // Here we use Service
         Intent(requireActivity(), LoadQuestionsFromFileService::class.java).apply {
             action = LoadQuestionsFromFileService.ACTION_LOAD_QUESTIONS
@@ -82,6 +90,9 @@ class GameFragment : Fragment(), HasCustomTitle, TaskListener {
 
     // This method is also called in a separate thread because Service notifies listeners
     override fun onCompleted(questions: MutableList<Question>) {
+        Log.d("LAB3", "GameFragment onCompleted")
+        Log.d("LAB3", "Executed on: ${Thread.currentThread().id}")
+
         // Assign a copy
         questionsList = questions.toMutableList()
 
@@ -102,6 +113,9 @@ class GameFragment : Fragment(), HasCustomTitle, TaskListener {
     }
 
     private fun showQuestions() {
+        Log.d("LAB3", "GameFragment showQuestions")
+        Log.d("LAB3", "Executed on: ${Thread.currentThread().id}")
+
         binding.questionTv.text = takenQuestions[0].question
 
         binding.answerButtonA.isEnabled = true
